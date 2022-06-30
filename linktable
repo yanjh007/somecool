@@ -1,0 +1,37 @@
+
+
+class LinkTable {
+    constructor(chker) {
+        // setup  compareer or default
+        this._checker = chker ? chker : (a,b) => { return a == b };
+    }
+
+    // add item as first 
+    add(key,value) {
+        // replace original header
+        let item = { value,
+            _key : key,
+            _next: this._header 
+        }
+        this._header = item;
+    }
+
+    find(key,bremove= false) {
+        let item  = this._header; // parent item
+        let pitem = this._header; // current item
+        do {
+            if (item._key == key ) { //
+                // remmove from  linklist 
+                if (bremove) pitem.next = item.next;
+                return item.value; // get content 
+            } else {
+                if (bremove) pitem = item; // set current parent
+            }
+        } while (item = item._next);
+
+        return null;
+    }
+
+    remove(key) { return this.find(key,true) };
+
+}
