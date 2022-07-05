@@ -1,0 +1,26 @@
+{
+  "name": "somecool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "hashtable.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yanjh007/somecool.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/yanjh007/somecool/issues"
+  },
+  "homepage": "https://github.com/yanjh007/somecool#readme",
+  "dependencies": {
+    "async": "^3.2.4"
+  }
+}
