@@ -23,21 +23,6 @@ const QUE_JOB = async.queue((job,cb)=>{
     cb();
 },1);
 
-const queue = async.queue((task, completed) => {
-    // Here task is the current element being
-    // processed and completed is the callback function
-     
-    console.log("Currently Busy Processing Task " + task);
-     
-    // Simulating a complex process.
-    setTimeout(()=>{
-        // Number of elements to be processed.
-        const remaining = queue.length();
-        completed(null, {task, remaining});
-    }, 1000);
- 
-}, 1);
-
 // add job to time wheell job.time is offset of current time 
 // job.time to run in second 
 const comparer = (a,b)=>{ return b.time > a.time };
@@ -72,7 +57,7 @@ const addJob = (job)=>{
     let jhour = 1 + (0 | job.time / 3600) % 24; // index job hour
     if (ihour !=  jhour) {  // add to last 
         addNode(JOB_TODAY[jhour],job);
-        console.log("Job Add Hour:", job.id);
+        console.log("Job Add Hour:", job.id, jhour);
         return;
     }
 
@@ -94,7 +79,7 @@ const addJob = (job)=>{
     if (isecond !=  jsecond) { // other minute
         addNode(JOB_TODAY[jsecond],job);
 
-        console.log("Job Add Second:", job.id);
+        console.log("Job Add Second:", job.id, jsecond);
         return;
     };
 
@@ -128,6 +113,36 @@ const tickTime = () =>{
     return itick;
 }
 
+const rejob =()=>{
+    let jlist1,jlist2,jhour,
+    ibegin = 0 | Date.now() / 86400000 * 86400 + 86400,
+    iend   = ibegin + 86400; 
+
+    // travel future list job 
+    let cnode = JOB_TODAY[0].first;
+    let pnode = JOB_TODAY[0].first;
+    while (cnode) {
+        if (cnode.time > iend) { // remain in future
+            pnode = cnode;
+            cnode = cnode.next;
+        } else { // add job list 
+            jhour = 1 + (0 | cnode.time / 3600) % 24;
+            addNode(JOB_TODAY[jhour],cnode.job);
+
+            // first one remove
+            if (cnode == JOB_TODAY[0].first) {
+                JOB_TODAY[0].first = cnode.next;
+                pnode = JOB_TODAY[0].first;
+                cnode = JOB_TODAY[0].first;
+            } else { // other remove
+                pnode.next = cnode.next;
+                cnode = cnode.next;
+            }
+        }
+    }  
+
+}
+
 const chkWheel = ()=>{
     // realy tick 
     let itick = tickTime();
@@ -147,6 +162,9 @@ const chkWheel = ()=>{
         }    
         // clean hour
         JOB_TODAY[CUR_TICK.Hour] = {};
+
+        // reset future job 
+        if (CUR_TICK.Hour == 1) rejob();
     }
 
     // move current minute to second
