@@ -30,12 +30,13 @@ const comparer = (a,b)=>{ return b.time > a.time };
 // add job to node 
 const addNode = (cnode,job) => {
     let ojob = { job };
-    if (cnode.last ) {
+    if (cnode.last) { // add to last
         cnode.last.next  = ojob;
-    } else { // add to last 
+    } else { // set first
         cnode.first = ojob;
     }
 
+    // set current last 
     cnode.last = ojob;
 }
 

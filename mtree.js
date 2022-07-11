@@ -2,7 +2,8 @@
 
 // array heap first is min
 
-class MinHeap {
+class MinTree {
+    _root = null;
     // values array 
     _values =  Array();
 
@@ -41,6 +42,11 @@ class MinHeap {
 
     // add item to minHeap array
     add(item) {
+        if (!this._root) {
+            this._root = item;
+            return;
+        }         
+
         // if(this._size >= this._values.length) Arrays.copyOf(values, size << 1) ;
         this._values[this._size++] = item ;
         return this._fixUp();
