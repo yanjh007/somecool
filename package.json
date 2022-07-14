@@ -21,6 +21,8 @@
   },
   "homepage": "https://github.com/yanjh007/somecool#readme",
   "dependencies": {
-    "async": "^3.2.4"
+    "async": "^3.2.4",
+    "bs58": "^5.0.0",
+    "winston": "^3.8.1"
   }
 }
