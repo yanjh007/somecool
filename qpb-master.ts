@@ -6,10 +6,11 @@ const buns = new Array(cpus);
 console.log("Bun Cluster:", cpus);
 
 const
-JQUEUE = [],
+FSLAVE = "./qpb-slave.ts", // slave file
 SVKEY = Buffer.from("serverkey"),
 HOST  = "0.0.0.0",
-PORT  = 6080;
+PORT  = 6080,
+JQUEUE = [];
 
 let rjob,isJobbing = false;
 const doJob = async()=>{
@@ -38,9 +39,10 @@ const onMessage = (msg)=>{
    }
 };
 
+
 for (let i = 0; i < cpus; i++) {
   buns[i] = spawn({
-    cmd: ["bun", "./server.ts"],
+    cmd: ["bun", FSLAVE],
     ipc: onMessage,
     stdout: "inherit",
     stderr: "inherit",
